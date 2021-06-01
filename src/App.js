@@ -14,7 +14,9 @@ function App() {
       .orderBy("timeStamp", "desc")
       .onSnapshot((snapshot) => {
         console.log(snapshot.docs.map((doc) => doc.data().text));
-        setTodos(snapshot.docs.map((doc) => doc.data().text));
+        setTodos(
+          snapshot.docs.map((doc) => ({ id: doc.id, text: doc.data().text }))
+        );
       });
   }, []);
   return (
@@ -36,7 +38,7 @@ function App() {
             disabled={!input}
             onClick={(e) => {
               e.preventDefault();
-              setTodos([...todos, input]);
+              // setTodos([...todos, input]);
               db.collection("todos").add({
                 text: input,
                 timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
